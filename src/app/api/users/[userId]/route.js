@@ -7,7 +7,7 @@ export async function DELETE(req, { params: { userId } }) {
       _id: userId,
     });
     return NextResponse.json(user, {
-      status: 203,
+      status: 200,
       statusText: "Removed user successfully",
     });
   } catch (error) {
@@ -26,8 +26,8 @@ export async function DELETE(req, { params: { userId } }) {
 export async function GET(req, { params: { userId } }) {
   try {
     const user = await User.findById({
-      _id: req.params.userId,
-    });
+      _id: userId,
+    }).select("-password");
     return NextResponse.json(user, {
       status: 200,
       statusText: "User successfully fetched",
@@ -40,21 +40,28 @@ export async function GET(req, { params: { userId } }) {
   }
 }
 
-export async function PATCH(req, { params: {userId} }) {
-    let newUser = await req.json();
-    try {
-        const user = await User.findByIdAndUpdate({
-            _id:userId
-        },newUser,{new:true})
+export async function PATCH(req, { params: { userId } }) {
+  let newUser = await req.json();
+  try {
+    const user = await User.findByIdAndUpdate(
+      {
+        _id: userId,
+      },
+      newUser,
+      { new: true }
+    );
 
-        return NextResponse.json(user,{
-            status:202,
-            statusText:"User updated suucessfully"
-        })
-    } catch (error) {
-        console.table(error);
-        return NextResponse.json({
-            message:"USer wasn't updated"
-        })
-    }
+    return NextResponse.json(user, {
+      status: 200,
+      statusText: "User updated suucessfully",
+    });
+  } catch (error) {
+    console.table(error);
+    return NextResponse.json(
+      {
+        message: "USer wasn't updated",
+      },
+      { status: 400, statusText: "Error while updating user" }
+    );
+  }
 }
