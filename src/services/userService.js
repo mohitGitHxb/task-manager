@@ -9,7 +9,7 @@ export async function signUp(user) {
 
 export async function login(user) {
   const result = await makeApiCall
-    .post("/api/users", user)
+    .post("/api/login", user)
     .then((response) => response?.data);
   return result;
 }
