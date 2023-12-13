@@ -1,18 +1,20 @@
 import { connectDb } from "@/helper/db";
 import { User } from "@/models/user";
 import { NextResponse } from "next/server";
-connectDb().then(() => {
-  console.log("Connection established!!! can start server")
-}).catch((err) => {
-  console.log("Connection error,error: " + err);
-});
-
+import bcrypt from "bcryptjs";
+connectDb()
+  .then(() => {
+    console.log("Connection established!!! can start server");
+  })
+  .catch((err) => {
+    console.log("Connection error,error: " + err);
+  });
 
 export async function GET() {
   try {
     const users = await User.find();
-    if(!users){
-      console.log("There is no user");
+    if (!users) {
+      console.log("There are no users");
     }
     return NextResponse.json(users, {
       status: 200,
@@ -26,67 +28,15 @@ export async function GET() {
     });
   }
 }
-// export function GET(request) {
-//   const users = [
-//     {
-//         id: 1,
-//         name: "John",
-//         age: 25,
-//         profession: "Engineer"
-//       },
-//       {
-//         id: 2,
-//         name: "Sarah",
-//         age: 30,
-//         profession: "Teacher"
-//       },
-//       {
-//         id: 3,
-//         name: "Michael",
-//         age: 40,
-//         profession: "Doctor"
-//       },
-//       {
-//         id: 4,
-//         name: "Emily",
-//         age: 28,
-//         profession: "Graphic Designer"
-//       },
-//       {
-//         id: 5,
-//         name: "David",
-//         age: 35,
-//         profession: "Architect"
-//       },
-//       {
-//         id: 6,
-//         name: "Lisa",
-//         age: 32,
-//         profession: "Lawyer"
-//       },
-//       {
-//         id: 7,
-//         name: "Daniel",
-//         age: 45,
-//         profession: "Accountant"
-//       },
-//       {
-//         id: 8,
-//         name: "Sophia",
-//         age: 29,
-//         profession: "Writer"
-//       }
-//   ];
-
-//   return NextResponse.json(users);
-// }
 export async function POST(request) {
   const { name, email, password, about, profileURL } = await request.json();
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
 
   const user = new User({
     name,
     email,
-    password,
+    password: hashedPassword,
     about,
     profileURL,
   });
@@ -103,12 +53,10 @@ export async function POST(request) {
       {
         message: "Failed to create user !!",
       },
-      { status: 401, statusText: "Failed to create user" }
+      { status: 403, statusText: "Failed to create user" }
     );
   }
 }
-
-
 
 // Params or query parameters
 /* export function DELETE(){
