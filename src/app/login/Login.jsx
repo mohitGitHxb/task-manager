@@ -1,30 +1,32 @@
 "use client";
-import UserContext from "@/context/userContext";
 import { login } from "@/services/userService";
 import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
+import UserContext from "../context/userContext";
 const validateInputs = (data, prop) => {
   if (data[prop].trim() === "" || data[prop] == null) {
     toast.warning(`${prop} is required !!`, {
       position: "top-center",
     });
-    return;
+    return false;
   }
+  return true;
 };
 const Login = () => {
   const router = useRouter();
-  const context = useContext(UserContext);
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
-
+  const context = useContext(UserContext);
   const loginFormSubmitted = async (event) => {
     event.preventDefault();
     console.log(loginData);
     for (let key in loginData) {
-      validateInputs(loginData, key);
+      if (validateInputs(loginData, key) === false) {
+        return;
+      }
     }
 
     //valid data
@@ -35,8 +37,8 @@ const Login = () => {
       console.log(result);
       toast.success("Logged In");
       //redirect
-      context.setUser(result.user);
-      router.push("/profile/user");
+      context.setUser(result);
+      router.push("/show-tasks");
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message, {

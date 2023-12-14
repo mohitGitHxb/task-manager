@@ -13,3 +13,15 @@ export async function login(user) {
     .then((response) => response?.data);
   return result;
 }
+export async function currentUser() {
+  const result = await makeApiCall
+    .get("/api/current")
+    .then((response) => response?.data);
+  return result;
+}
+export async function logout() {
+  const result = await makeApiCall
+    .post("/api/logout")
+    .then((response) => response?.data);
+  return result;
+}

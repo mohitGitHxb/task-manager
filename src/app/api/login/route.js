@@ -39,14 +39,14 @@ export async function POST(request) {
     });
 
     // Set the token in a cookie
-
     const response = NextResponse.json(user, {
       status: 200,
       statusText: "User logged in successfully",
     });
     response.cookies.set("authToken", token, {
-      expiresIn: "1d",
-      httpOnly: false,
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      httpOnly: true,
+      sameSite: "none",
     });
     return response;
   } catch (error) {
