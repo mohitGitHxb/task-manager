@@ -6,7 +6,7 @@ export async function GET(request) {
   const data = jwt.verify(authToken, process.env.JWT_SECRET);
   console.log("Current user " , data);
   if (data) {
-    const user = await User.findById(data._id).select("-password");
+    const user = await User.findById(data.userId).select("-password");
     return NextResponse.json(user, {
       status: 200,
       statusText: "Fetched current user SUCCESSFULLY",

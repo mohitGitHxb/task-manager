@@ -40,21 +40,19 @@ export function middleware(request) {
 
       return NextResponse.redirect(new URL("/login", request.url));
     } else {
-    //   try {
-    //     jwt.verify(authToken, process.env.JWT_SECRET);
-    //     // If verification is successful, continue with the request
-    //     return NextResponse.next();
-    // } catch (error) {
-    //     console.log(error);
-    //     // If verification fails, return an error response
-    //     return NextResponse.json(
-    //         {
-    //             message: "Invalid token",
-    //         },
-    //         { status: 401, statusText: "Unauthorized" }
-    //         );
-    //     }
-        return NextResponse.next();
+      // const res = jwt.verify(authToken, process.env.JWT_SECRET);
+      // If verification is successful, continue with the request
+      return NextResponse.next();
+      // return NextResponse.json(
+      //   {
+      //     message: "TOken verification Failed",
+      //     success: false,
+      //   },
+      //   {
+      //     status: 401,
+      //     statusText: "Token verification failed",
+      //   }
+      // );
     }
   }
 }

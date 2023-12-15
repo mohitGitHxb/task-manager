@@ -48,7 +48,7 @@ const Login = () => {
   };
 
   return (
-    <div className="grid grid-cols-12">
+    <div className="grid grid-cols-12 min-h-full">
       <div className="col-span-4 col-start-5 ">
         <div className="py-5"></div>
 

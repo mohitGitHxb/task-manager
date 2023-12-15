@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
       <UserProvider>
           <CustomNavbar />
           <ToastContainer />
-          <div className="mt-0">{children}</div>
+          <div className="mt-0 min-h-[80vh]">{children}</div>
           <Footer />
         </UserProvider>
       </body>
